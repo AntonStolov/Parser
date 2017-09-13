@@ -43,8 +43,15 @@ def parser():
     headers = headersInterships + headersJavascript + headersPracuj + headersPracujFront
     newHeaders = []
 
+    count = 0
     for i in range(len(headers)):
-        if dataJson[i]['text'] != headers[i]['text']:
+        not_faund = True
+
+        for j in range(len(dataJson)):
+            if  headers[i]['text'] == dataJson[j]['text']:
+                not_faund = False
+
+        if not_faund == True:
             newHeaders.append(headers[i])
             triger = True
 
@@ -52,4 +59,5 @@ def parser():
         print (newHeaders)
         with open('parser.json', 'w') as file:
                 json.dump(headers, file, indent=2, ensure_ascii=False)
+
         return newHeaders
