@@ -5,11 +5,11 @@ import time
 token = '385017512:AAHrISO0n6qaEcYbZq9utTdT8PqWLZw3Y7A'
 URL ='https://api.telegram.org/bot' + token + '/'
 triger = False
+timer = 0
 
 def get_updates():
     url = URL + 'getupdates'
-    r = requests.get(url)
-    return r.json()
+    return requests.get(url).json()
 
 def get_message():
     data = get_updates()
@@ -40,13 +40,17 @@ if __name__ == "__main__":
     first_update_id = get_update_id()
 
     while True:
-        new_heders = OlxParser.parser()
-        if new_heders != None:
-            for i in range(len(new_heders)):
-                message = '    ' + new_heders[i]['text'] + '   ' + new_heders[i]['link']
-                send_message(get_message()['chat_id'], message)
-                print (message)
-        print(get_update_id())
+        if timer == 5:
+            new_heders = OlxParser.parser()
+            if new_heders != None:
+                for i in range(len(new_heders)):
+                    message = '    ' + new_heders[i]['text'] + '   ' + new_heders[i]['link']
+                    send_message(get_message()['chat_id'], message)
+                    print (message)
+            timer = 0
+
+        print(get_update_id(), timer)
+        timer += 1
 
         time.sleep(1)
 

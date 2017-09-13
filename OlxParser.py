@@ -5,6 +5,7 @@ sys.setdefaultencoding('utf8')
 import requests
 import json
 from bs4 import BeautifulSoup
+import pracuj
 
 
 def parser():
@@ -30,10 +31,16 @@ def parser():
     url = 'https://www.olx.pl/praca/informatyka/warszawa/q-javascript/'
     headersJavascript = trade_spider(0, url, 'tr', 'wrap')
 
+    url = 'https://www.pracuj.pl/praca/JavaScript%20junior;kw/warszawa;wp/it%20-%20rozw%c3%b3j%20oprogramowania;cc,5016'
+    headersPracuj = pracuj.trade_pracuj_pl(0, url, 'h2', 'o-list_item_link')
+
+    url = 'https://www.pracuj.pl/praca/front%20end%20junior;kw/warszawa;wp/it%20-%20rozw%c3%b3j%20oprogramowania;cc,5016'
+    headersPracujFront = pracuj.trade_pracuj_pl(0, url, 'h2', 'o-list_item_link')
+
     with open('parser.json') as readJson:
         dataJson = json.load(readJson)
 
-    headers = headersInterships + headersJavascript
+    headers = headersInterships + headersJavascript + headersPracuj + headersPracujFront
     newHeaders = []
 
     for i in range(len(headers)):
@@ -44,5 +51,5 @@ def parser():
     if triger == True:
         print (newHeaders)
         with open('parser.json', 'w') as file:
-                json.dump(headersInterships + headersJavascript, file, indent=2, ensure_ascii=False)
+                json.dump(headers, file, indent=2, ensure_ascii=False)
         return newHeaders
